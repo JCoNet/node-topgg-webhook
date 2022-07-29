@@ -1,0 +1,19 @@
+{
+  "name": "express-listener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "yarn": "yarn install && npm run start",
+    "snpm": "npm i && npm run start",
+    "install-yarn": "npm install --global yarn"
+  },
+  "author": "Discord: JCoDog#0001",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "discord.js": "^14.1.1",
+    "express": "^4.18.1"
+  }
+}

@@ -10,6 +10,7 @@ let config = {
   botToken: "",
   guildID: "",
   chanelID: "",
+  colorCode: "",
   topggAuth: ""
 }
 
@@ -28,34 +29,74 @@ client.once('ready', async () => {
   console.log(`Bot online as ${client.user.tag}`);
 })
 
-app.post('/handler', async (req, res) => {
+app.post('/server', async (req, res) => {
   if (req.headers.authorization === config.topggAuth) {
     let guild = await client.guilds.cache.fetch(config.guildID);
-  let member = await guild.members.cache.fetch(req.body.user);
-  let channel = await guild.channels.cache.fetch(config.chanelID);
+    let member = await guild.members.cache.fetch(req.body.user);
+    let channel = await guild.channels.cache.fetch(config.chanelID);
 
-  let embed = new Discord.MessageEmbed()
-  .setTitle("Vote")
-  .setDescription("Someone voted for the server")
-  .setThumbnail(member.user.displayAvatarURL({ 
-    extension: 'png', forceStatic: true, size: 2048
-  }))
-  .addFields(
-    {name: "Member", value: `${member.user.tag}`, inline: true},
-  )
-  .setColor("GOLD")
-  .setFooter({ text: "Vote recieved on Top.GG", iconURL: "https://avatars.githubusercontent.com/u/34552786?s=280&v=4" })
+    let embed = new Discord.MessageEmbed()
+      .setTitle("New Server Vote")
+      .setDescription(`${member.displayName} just voted for ${guild.name} on top.gg!`)
+      .setAuthor({name: `${member.user.tag}`, iconURL: `${member.user.displayAvatarURL({ 
+        extension: 'png', forceStatic: true, size: 2048
+      })}`})
+      .setThumbnail(guild.iconURL({ 
+        extension: 'png', forceStatic: true, size: 2048
+      }))
+      .setColor(config.colorCode)
+      .setFooter({ text: "Vote recieved on Top.GG", iconURL: "https://avatars.githubusercontent.com/u/34552786?s=280&v=4" });
 
-  try {
-    channel.send({
-      content: "New Vote",    
-      embeds: [embed]
-    });
-  } catch (err) {
-    console.error(err);
-  };
+    try {
+      channel.send({
+        content: ":arrow_up:",    
+        embeds: [embed]
+      });
+    } catch (err) {
+      console.error(err);
+    };
 
-  res.sendStatus(200);
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(403);
+  }
+});
+
+app.post('/bot', async (req, res) => {
+  if (req.headers.authorization === config.topggAuth) {
+    let guild = await client.guilds.cache.fetch(config.guildID);
+    let member = await guild.members.cache.fetch(req.body.user);
+    let channel = await guild.channels.cache.fetch(config.chanelID);
+
+    let bot = await client.users.cache.fetch(req.body.bot);
+
+    let embed = new Discord.MessageEmbed()
+      .setTitle("New Bot Vote")
+      .setAuthor({name: `${member.user.tag}`, iconURL: `${member.user.displayAvatarURL({ 
+        extension: 'png', forceStatic: true, size: 2048
+      })}`})
+      .setThumbnail(bot.user.displayAvatarURL({ 
+        extension: 'png', forceStatic: true, size: 2048
+      }))
+      .setColor(config.colorCode)
+      .setFooter({ text: "Vote recieved on Top.GG", iconURL: "https://avatars.githubusercontent.com/u/34552786?s=280&v=4" });
+
+    if (req.body.isWeekend == true) {
+      embed.setDescription(`${member.displayName} just voted for ${bot.user.name} on top.gg! This counted as 2 votes!`)
+    } else {
+      embed.setDescription(`${member.displayName} just voted for ${bot.user.name} on top.gg!`)
+    }
+
+    try {
+      channel.send({
+        content: ":arrow_up:",    
+        embeds: [embed]
+      });
+    } catch (err) {
+      console.error(err);
+    };
+
+    res.sendStatus(200);
   } else {
     res.sendStatus(403);
   }

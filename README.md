@@ -15,8 +15,8 @@ Head to the top.gg webhook page for your bot or server and set the webhook to th
 specify after that if it is a bot or server vote by adding /server or /bot after the ip or url.
 
 > Make sure that if you are going to use an IP that you are using your public IP.
-> - For server vote webhooks an example url would be https://jconet.co.uk:3000/server
-> - For bot vote webhooks an example url would be https://jconet.co.uk:3000/bot
+> - For server vote webhooks an example url would be https://example.com:3000/server
+> - For bot vote webhooks an example url would be https://example.com:3000/bot
 
 ## Running the listener
 You can choose how to start your listener within this project. This is beacause when starting the listener, it checks for and installs any missing required modules and any available updates for the modules that are already installed.

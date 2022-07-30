@@ -64,9 +64,9 @@ app.post('/server', async (req, res) => {
 
 app.post('/bot', async (req, res) => {
   if (req.headers.authorization === config.topggAuth) {
-    let guild = await client.guilds.cache.fetch(config.guildID);
-    let member = await guild.members.cache.fetch(req.body.user);
-    let channel = await guild.channels.cache.fetch(config.chanelID);
+    let guild = await client.guilds.fetch(config.guildID);
+    let member = await guild.members.fetch(req.body.user);
+    let channel = await guild.channels.fetch(config.chanelID);
 
     let bot = await client.users.cache.fetch(req.body.bot);
 
